@@ -1,4 +1,5 @@
 const nanoid = require('nanoid');
+const bcrypt = require("bcrypt");
 
 const TABLA = 'user';
 
@@ -8,19 +9,25 @@ module.exports = function (injectedStore) {
         store = require('../../../store/dummy'); //si no se exta inyectando el store va a usar el de pruebas
     }
 
-    function list() {
-        return store.list(TABLA);
+    async function list() {
+        const users = await store.list(TABLA)
+        const usersSelect = users.map((u) =>({
+            name: u.name,
+            id: u.id,
+            username: u.username
+        }))
+        return usersSelect;
     }
 
     function get(id) {
         return store.get(TABLA, id);
     }
 
-    function upsert(body) {
+    async function upsert(body) {
         const user = {
             name: body.name,
             username: body.username,
-            password: body.password
+            password: await bcrypt.hash(body.password, 10)
         }
 
         if (body.id) {
@@ -29,6 +36,7 @@ module.exports = function (injectedStore) {
             user.id = nanoid();
         }
 
+        
         return store.upsert(TABLA, user);
     }
 

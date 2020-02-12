@@ -1,47 +1,38 @@
-const bcrypt = require('bcrypt');
-
-const auth = require('../../../auth');
-const TABLA = 'user';
-
-module.exports = function (injectedStore) {
-    let store = injectedStore;
-    if (!store) {
-        store = require('../../../store/dummy');
-    }
-
-    async function logIn(user) {
-           
-        console.log(user);
-        
-        // return bcrypt.compare(password, data.password)
-        //     .then(sonIguales => {
-        //         if (sonIguales === true) {
-        //             // Generar token;
-        //             return auth.sign({ ...data })
-        //         } else {
-        //             throw new Error('Informacion invalida');
-        //         }
-        //     });
-    }
-
-    async function upsert(data) {
-        const authData = {
-            id: data.id,
-        }
-
-        if (data.username) {
-            authData.username = data.username;
-        }
-
-        if (data.password) {
-            authData.password = await bcrypt.hash(data.password, 5);
-        }
-
-        return store.upsert(TABLA, authData);
-    }
-
-    return {
-        logIn,
-        upsert,
+const jwt = require("jsonwebtoken");
+const {
+  api: { authJwtSecret }
+} = require("../../../config");
+module.exports = function() {
+  async function logIn(user) {
+    const { id, username, name } = user;
+    const payload = {
+      sub: id,
+      name,
+      username
     };
+    console.log(authJwtSecret);
+    
+    const newToken = jwt.sign(payload, authJwtSecret, {
+      expiresIn: "15m"
+    });
+
+    const data = {
+      token: newToken,
+      ...user
+    };
+
+    return data;
+    // return bcrypt.compare(password, data.password).then(sonIguales => {
+    //   if (sonIguales === true) {
+    //     // Generar token;
+    //     return auth.sign({ ...data });
+    //   } else {
+    //     throw new Error("Informacion invalida");
+    //   }
+    // });
+  }
+
+  return {
+    logIn
+  };
 };
