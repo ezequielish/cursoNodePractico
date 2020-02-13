@@ -10,7 +10,6 @@ module.exports = function() {
       name,
       username
     };
-    console.log(authJwtSecret);
     
     const newToken = jwt.sign(payload, authJwtSecret, {
       expiresIn: "15m"
@@ -22,14 +21,6 @@ module.exports = function() {
     };
 
     return data;
-    // return bcrypt.compare(password, data.password).then(sonIguales => {
-    //   if (sonIguales === true) {
-    //     // Generar token;
-    //     return auth.sign({ ...data });
-    //   } else {
-    //     throw new Error("Informacion invalida");
-    //   }
-    // });
   }
 
   return {

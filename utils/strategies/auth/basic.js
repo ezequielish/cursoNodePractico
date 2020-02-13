@@ -3,7 +3,8 @@ const { BasicStrategy } = require("passport-http");
 const bcrypt = require("bcrypt");
 const error = require("../../error");
 const TABLA = "user";
-const store = require("../../../store/dummy");
+// const store = require("../../../store/dummy");
+const store = require("../../../store/mysql");
 passport.use(
   new BasicStrategy(async function(username, password, cb) {
     try {

@@ -12,13 +12,13 @@ const db = {
 };
 
 async function list(tabla) {
-
   return db[tabla];
 }
 
 async function get(tabla, id) {
-  let col = list(tabla);
-  return col.filter(item => item.id === id)[0] || null; //filtramos por id y devolvemos el primer seleccion
+  let col = await list(tabla);
+ 
+  return col.filter(item => item.id === id)[0] || []; //filtramos por id y devolvemos el primer seleccion
 }
 
 async function upsert(tabla, data) {
