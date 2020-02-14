@@ -1,5 +1,6 @@
 require("dotenv").config();
 module.exports = {
+  remoteDB: process.env.REMOTE_DB || false,
   api: {
     port: process.env.API_PORT || 4000,
     authJwtSecret: process.env.JWT_SECRET_SIGN
@@ -8,7 +9,11 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOTS,
     password: process.env.DB_USER_PASSWORD,
-    user: process.env.DB_USER,
+    user: process.env.DB_USER
+  },
+  dbMysqlRemote: {
+    host: process.env.MYSQL_SRV_HOST || "localhost",
+    port: process.env.MYSQL_SRV_PORT || 4001
   }
 };
 // const dbconf = {

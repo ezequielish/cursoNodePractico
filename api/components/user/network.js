@@ -9,7 +9,7 @@ require("../../../utils/strategies/auth/jwt");
 
 // Routes
 router.get("/", passport.authenticate("jwt", { session: false }), list);
-router.get("/id", passport.authenticate("jwt", { session: false }), get);
+router.get("/:id", passport.authenticate("jwt", { session: false }), get);
 router.get('/following/:id',passport.authenticate("jwt", { session: false }), following);
 router.post("/", upsert);
 router.put("/", passport.authenticate("jwt", { session: false }), upsert);
@@ -26,8 +26,8 @@ function list(req, res, next) {
     });
 }
 
-function get(req, res) {
-  Controller.get(req.user.sub)
+function get(req, res, next) {  
+  Controller.get(req.user.sub, req.params.id, next)
     .then(user => {
       response.success(req, res, user, 200);
     })

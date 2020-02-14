@@ -39,7 +39,8 @@ handleCon();
 
 function list(table) {
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM ${table}`, (err, data) => {
+    const select = '*'
+    connection.query(`SELECT ${select} FROM ${table}`, (err, data) => {
       if (err) return reject(err);
       resolve(data);
     });
@@ -48,7 +49,8 @@ function list(table) {
 
 function get(table, id) {
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM ${table} WHERE id=${id}`, (err, data) => {
+    const select = 'name, username'
+    connection.query(`SELECT ${select} FROM ${table} WHERE id=${id}`, (err, data) => {
       if (err) return reject(err);
       resolve(data);
     });

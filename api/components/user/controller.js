@@ -24,11 +24,18 @@ module.exports = function(injectedStore) {
     }
   }
 
-  async function get(id) {
-    const user = await store.get(TABLA, id);
-    delete user[0].password;
+  async function get(idJwt, idParams, next) {
+    // if(idJwt != idParams){
+    //   throw error("no autorizado")
+    // }
+    try {
+      const user = await store.get(TABLA, idJwt);
+      delete user[0].password;
 
-    return user;
+      return user;
+    } catch (error) {
+      next(error);
+    }
   }
 
   async function upsert(body, userTokn, next) {
@@ -61,7 +68,7 @@ module.exports = function(injectedStore) {
     }
   }
   function follow(from, to) {
-    console.log(from);
+    // console.log(from);
 
     return store.upsert(TABLA + "_follow", {
       user_from: from,
@@ -69,12 +76,12 @@ module.exports = function(injectedStore) {
     });
   }
   async function following(user) {
-    const join = {}
-    join[TABLA] = 'user_to'; // tabla y campo a la cual haremos join
+    const join = {};
+    join[TABLA] = "user_to"; // tabla y campo a la cual haremos join
     const query = { user_from: user };
-    
-    return await store.query(TABLA + '_follow', query, join);
-}
+
+    return await store.query(TABLA + "_follow", query, join);
+  }
   return {
     list,
     get,
