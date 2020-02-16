@@ -1,18 +1,18 @@
 const redis = require('redis');
 
-const config = require('../config');
+const { redis: { host, port, password } } = require('../config');
 
 const client = redis.createClient({
-    host: config.redis.host,
-    port: config.redis.port,
-    password: config.redis.password,
+    host: host,
+    port: port,
+    password: password,
 });
 
 function list(table) {
     return new Promise((resolve, reject) => {
         client.get(table, (err, data) => {
             if (err) return reject(err);
-
+            
             let res = data || null;
             if (data) {
                 res = JSON.parse(data);
@@ -32,7 +32,7 @@ async function upsert(table, data) {
         key = key + '_' + data.id;
     }
 
-    client.setex(key, 10, JSON.stringify(data));
+    client.setex(key, 10, JSON.stringify(data));//tabla, tiempo de expiracion del dato, data
     return true;
 }
 

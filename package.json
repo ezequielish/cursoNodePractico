@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon ./api/index.js",
-    "start:mysql": "nodemon ./mysql/index-mysql.js"
+    "start:mysql": "nodemon ./mysql/index-mysql.js",
+    "start:cache": "nodemon ./cache/index-cache.js",
+    "start:post": "nodemon ./post/index-post.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
     "passport": "^0.4.1",
     "passport-http": "^0.3.0",
     "passport-jwt": "^4.0.0",
+    "redis": "^3.0.2",
     "request": "^2.88.2",
     "swagger-ui-express": "^4.1.3"
   },

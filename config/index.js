@@ -14,6 +14,15 @@ module.exports = {
   dbMysqlRemote: {
     host: process.env.MYSQL_SRV_HOST || "localhost",
     port: process.env.MYSQL_SRV_PORT || 4001
+  },
+  cachaService: {
+    host: process.env.CACHE_HOST || "localhost",
+    port: process.env.CACHE_PORT || 4002
+  },
+  redis: {
+    host: process.env.HOST_REDIS,
+    port: process.env.PORT_REDIS,
+    password: process.env.PASS_REDIS
   }
 };
 // const dbconf = {

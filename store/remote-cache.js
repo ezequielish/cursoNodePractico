@@ -1,4 +1,4 @@
 const remote = require('./remote');
-const config = require('../config');
+const { cachaService: { host, port } } = require('../config');
 
-module.exports = new remote(config.cacheService.host, config.cacheService.port);
+module.exports = new remote(host, port);

@@ -4,15 +4,25 @@ const error = require("../../../utils/error");
 
 const TABLA = "user";
 
-module.exports = function(injectedStore) {
+module.exports = function(injectedStore, injectedCache) {
   let store = injectedStore;
+  let cache = injectedCache;
+  
   if (!store) {
     store = require("../../../store/dummy"); //si no se exta inyectando el store va a usar el de pruebas
+  }
+  if (!cache) {
+    cache = require("../../../store/dummy");
   }
 
   async function list(next) {
     try {
-      const users = await store.list(TABLA);
+      let users = await cache.list(TABLA);      
+      if (!users) {
+        
+         users = await store.list(TABLA);
+         cache.upsert(TABLA, users);//lo ingresamos a la cache
+      }
       const usersSelect = users.map(u => ({
         name: u.name,
         id: u.id,
